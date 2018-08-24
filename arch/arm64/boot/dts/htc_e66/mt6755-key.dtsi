@@ -1,0 +1,42 @@
+/* KEYPAD start */
+/{
+	keycombo {
+		compatible = "keycombo";
+			/* clear_hw_reset */
+			key_down_delay  = <0>;          /* ms */
+			keys_down       = <116 0>;
+			/* cancel clear_hw_reset */
+			keys_up         = <115 0>;
+	};
+
+	keyreset {
+		compatible      = "keyreset";
+		key_down_delay  = <9000>;
+		keys_down       = <116 114 0>;
+	};
+};
+&keypad {
+	key_col0 = <103>;
+	key_col1 = <104>;
+	pinctrl-names = "key_up_pins_default";
+	pinctrl-0 = <&key_up_pins_default &key_down_pins>;
+	};
+
+&pio {
+	key_up_pins_default:key_down_col0 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO103__FUNC_KPCOL0>;
+			slew-rate = <0>;
+			bias-pull-dwon = <11>;
+		};
+	};
+	key_down_pins:key_down_col1 {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO104__FUNC_KPCOL1>;
+			slew-rate = <0>;
+			bias-pull-dwon = <11>;
+		};
+	};
+};
+/* KEYPAD end */
+

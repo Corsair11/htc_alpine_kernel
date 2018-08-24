@@ -1,0 +1,105 @@
+/ {
+	gpio_keys {
+		compatible = "gpio-keys";
+		input-name = "gpio-keys";
+		pinctrl-names = "tlmm_gpio_key_active","tlmm_gpio_key_suspend";
+		pinctrl-0 = <&gpio_key_pwr_active &gpio_key_up_active &gpio_key_down_active>;
+		pinctrl-1 = <&gpio_key_pwr_suspend &gpio_key_up_suspend &gpio_key_down_suspend>;
+
+	kpd_pwrkey: kpd_pwrkey {
+			label = "kpd_pwrkey";
+			gpios = <104>;
+			linux,input-type = <1>;
+			linux,code = <116>;
+			gpio-key,wakeup;
+			debounce-interval = <20>;
+		};
+
+	key_volup: key_volup {
+			label = "key_volup";
+			gpios = <101>;
+			linux,input-type = <1>;
+			linux,code = <115>;
+			debounce-interval = <20>;
+		};
+
+	key_voldown: key_voldown {
+			label = "key_voldown";
+			gpios = <102>;
+			linux,input-type = <1>;
+			linux,code = <114>;
+			debounce-interval = <20>;
+		};
+	};
+
+	keycombo {
+		compatible = "keycombo";
+			/* clear_hw_reset */
+			key_down_delay  = <0>;          /* ms */
+			keys_down       = <116 0>;
+			/* cancel clear_hw_reset */
+			keys_up         = <115 0>;
+	};
+
+	keyreset {
+		compatible      = "keyreset";
+		key_down_delay  = <9000>;
+		keys_down       = <116 114 0>;
+	};
+
+	keyled {
+		compatible      = "keyled";
+		key_down_delay  = <3000>;
+		keys_down       = <116 114 0>;
+	};
+};
+
+&pio {
+	gpio_key_pwr_active: key_power_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO104__FUNC_GPIO104>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_key_up_active: key_up_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO101__FUNC_GPIO101>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_key_down_active: key_down_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO102__FUNC_GPIO102>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_key_pwr_suspend: key_power_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO104__FUNC_GPIO104>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_key_up_suspend: key_up_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO101__FUNC_GPIO101>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_key_down_suspend: key_down_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO102__FUNC_GPIO102>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+};

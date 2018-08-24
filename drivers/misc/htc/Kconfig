@@ -1,0 +1,68 @@
+#
+# HTC MISC Driver Kconfig
+#
+config HTC_REBOOT_REASON_INFORMATION
+        default y
+        bool "HTC style reboot reason information features"
+        help
+          Say Y here if you want the HTC style reboot reason information features
+
+config HTC_DEBUG_BOOTLOADER_LOG
+        default y
+        bool "HTC Bootloader Log Support"
+        help
+          Say Y here if you want the HTC Bootloader Log Support
+
+config HTC_POWER_MONITOR_LOG
+        default n
+        bool "HTC Power Monitor Support"
+        help
+          Say Y here if you want the Power Monitor log
+
+config HTC_MODEM_EXCEPTION_INFO_EXPORT
+        bool "HTC modem exception info export"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        help
+          export modem exception info for tell htc
+
+config HTC_FEATURES_RIL_PCN0004_HTC_GARBAGE_FILTER
+        tristate "HTC_FEATURES_RIL_PCN0004_HTC_GARBAGE_FILTER"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        ---help---
+          Garbage Filter of TCP
+
+config HTC_FEATURES_RIL_PCN0005_C2K_POWER_DEBUG
+        tristate "HTC_FEATURES_RIL_PCN0005_C2K_POWER_DEBUG"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        ---help---
+          Help to debug c2k power
+
+config HTC_FEATURES_RIL_PCN0006_DRDI
+        tristate "HTC_FEATURES_RIL_PCN0006_DRDI"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        ---help---
+          WSD L1 DRDI feature
+
+config HTC_FEATURES_RIL_PCN0007_LWA
+        tristate "HTC_FEATURES_RIL_PCN0007_LWA"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        ---help---
+          Support LWA future
+
+config HTC_TYPEC_HEADSET_DETECT
+        tristate "HTC_TYPEC_HEADSET_DETECT"
+        default n
+        ---help---
+          USB TypeC audio headset detection
+
+config HTC_FEATURES_RIL_PCN0008_MD_SLEEP_DATA
+        tristate "HTC_FEATURES_RIL_PCN0008_MD_SLEEP_DATA"
+        default n
+        depends on MTK_ECCCI_DRIVER
+        ---help---
+          Support dump modem sleep data for power debug

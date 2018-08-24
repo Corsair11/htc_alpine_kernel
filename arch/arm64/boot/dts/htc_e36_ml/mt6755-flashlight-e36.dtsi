@@ -1,0 +1,47 @@
+&i2c3 {
+	tps61311@33{
+		compatible = "TPS61310_FLASHLIGHT";
+		reg = <0x33>;
+		tps61310,tps61310_strb0 = <83>;
+		tps61310,tps61310_strb1 = <84>;
+		tps61310,flash_duration_ms = <600>;
+		tps61310,led_count = <1>;
+		tps61310,disable_tx_mask = <1>;
+
+		tps61310_flash0: htc,tps61310_flash_0 {
+			label = "flash";
+			linux,name = "flash_0";
+			linux,default-trigger = "flash0_trigger";
+			htc,id = <0>;
+			htc,default-state = "off";
+			htc,max-current = <750>;
+		};
+
+		tps61310_flash1: htc,tps61310_flash_1 {
+			label = "flash";
+			linux,name = "flash_1";
+			linux,default-trigger = "flash1_trigger";
+			htc,id = <1>;
+			htc,default-state = "off";
+			htc,max-current = <750>;
+		};
+
+		tps61310_torch0: htc,tps61310_torch_0 {
+			label = "torch";
+			linux,name = "torch_0";
+			linux,default-trigger = "torch0_trigger";
+			htc,id = <0>;
+			htc,default-state = "off";
+			htc,max-current = <200>;
+		};
+
+		tps61310_torch1: htc,tps61310_torch_1 {
+			label = "torch";
+			linux,name = "torch_1";
+			linux,default-trigger = "torch1_trigger";
+			htc,id = <1>;
+			htc,default-state = "off";
+			htc,max-current = <200>;
+		};
+	};
+};

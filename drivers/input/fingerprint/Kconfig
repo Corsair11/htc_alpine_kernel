@@ -1,0 +1,16 @@
+#
+#Fingerprint
+#
+config MTK_FINGERPRINT
+	tristate "Mediatek Fingerprint"
+	default n 
+	---help---
+	Fingerprint mtk driver enable/disable in the kernel.
+	Say Y here if you want to use mediatek fingerprint driver,
+	fingerprint driver will support fingerprint function in REE,
+	it supports FPC's 102x/104x device.
+
+config FPC_HTC_DISABLE_CHARGING
+       tristate "HTC FPC disable charging while capturing image during enroll/verify"
+       depends on MTK_FINGERPRINT
+       default n

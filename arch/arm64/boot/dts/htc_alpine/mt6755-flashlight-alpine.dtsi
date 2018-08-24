@@ -1,0 +1,75 @@
+&tca6418 {
+	lm3643_en_active: lm3643_en_active {
+		config {
+			pins = "gpio1";
+			output-low;
+			bias-disable;
+		};
+	};
+	lm3643_en_inactive: lm3643_en_inactive {
+		config {
+			pins = "gpio1";
+			output-high;
+			bias-disable;
+		};
+	};
+};
+
+&i2c3 {
+	lm3643@63 {
+		compatible = "LM3643_FLASHLIGHT";
+		reg = <0x63>;
+//		lm3643,lm3643_hwen = <83>; //change to io_exp(1)
+		lm3643,lm3643_hwen_ioexp = <&tca6418 1 0>; //htc
+		lm3643,lm3643_strobe = <83>;
+		lm3643,lm3643_torch = <84>;
+		lm3643,flash_duration_ms = <400>;
+		lm3643,enable_FLT_1500mA = <1>;
+		lm3643,led_count = <1>;
+		lm3643,disable_tx_mask = <1>;
+		htc,dualflash = <1>;
+		pinctrl-names = "hwen_ioexp_gpio_active", "hwen_ioexp_gpio_inactive";
+		pinctrl-0 = <&lm3643_en_active>;
+		pinctrl-1 = <&lm3643_en_inactive>;
+
+		lm3643_flash0: htc,lm3643_flash_0 {
+			label = "flash";
+			linux,name = "flash_0";
+			linux,default-trigger =
+				"flash0_trigger";
+			htc,id = <0>;
+			htc,default-state = "off";
+			htc,max-current = <750>;
+		};
+
+		lm3643_flash1: htc,lm3643_flash_1 {
+			label = "flash";
+			linux,name = "flash_1";
+			linux,default-trigger =
+				"flash1_trigger";
+			htc,id = <1>;
+			htc,default-state = "off";
+			htc,max-current = <750>;
+		};
+
+		lm3643_torch0: htc,lm3643_torch_0 {
+			label = "torch";
+			linux,name = "torch_0";
+			linux,default-trigger =
+				"torch0_trigger";
+			htc,id = <0>;
+			htc,default-state = "off";
+			htc,max-current = <200>;
+		};
+
+		lm3643_torch1: htc,tps61310_torch_1 {
+			label = "torch";
+			linux,name = "torch_1";
+			linux,default-trigger =
+				"torch1_trigger";
+			htc,id = <1>;
+			htc,default-state = "off";
+			htc,max-current = <200>;
+		};
+	};
+};

@@ -1,0 +1,53 @@
+/ {
+	hall_ak8789 {
+		compatible = "hall_sensor,ak8789";
+		hall,att_used = <2>;
+		pinctrl-names = "gpio_hall_active","gpio_hall_suspend";
+		pinctrl-0 = <&gpio_hall_1_active &gpio_hall_2_active>;
+		pinctrl-1 = <&gpio_hall_1_suspend &gpio_hall_2_suspend>;
+
+	hall_1: hall_1 {
+		label = "hall_1";
+		hall,att_gpio = <11>;
+		};
+
+	hall_2: hall_2 {
+        label = "hall_2";
+		hall,att_gpio_s = <12>;
+		};
+	};
+};
+
+&pio {
+    gpio_hall_1_active: hall_1_active {
+        pins_cmd_dat {
+            pins = <PINMUX_GPIO11__FUNC_GPIO11>;
+            slew-rate = <0>;
+            bias-pull-up = <00>;
+        };
+    };
+
+    gpio_hall_1_suspend: hall_1_suspend {
+        pins_cmd_dat {
+            pins = <PINMUX_GPIO11__FUNC_GPIO11>;
+            slew-rate = <0>;
+            bias-pull-up = <00>;
+        };
+    };
+
+    gpio_hall_2_active: hall_2_active {
+        pins_cmd_dat {
+            pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+            slew-rate = <0>;
+            bias-pull-up = <00>;
+        };
+    };
+
+    gpio_hall_2_suspend: hall_2_suspend {
+        pins_cmd_dat {
+                pins = <PINMUX_GPIO12__FUNC_GPIO12>;
+                slew-rate = <0>;
+                bias-pull-up = <00>;
+        };
+    };
+};

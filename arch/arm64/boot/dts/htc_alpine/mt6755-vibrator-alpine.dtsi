@@ -1,0 +1,48 @@
+/* Vibrator start*/
+
+/* Vibrator GPIO start*/
+&tca6418 {
+	reset-gpio_high {
+		vib_reset_high: vib_reset_high {
+			config {
+				pins = "gpio13";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	reset-gpio_low {
+		vib_reset_low: vib_reset_low {
+			config {
+				pins = "gpio10";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+};
+
+&vibrator {
+	vib-reset-gpio_ioexp = <&tca6418 13 0>;
+	vib-smart-loop = <0>;
+	vib-actuator = <1>;
+	vib-rated-voltage = <0x40>;	//REG0x1F
+	vib-odclamp-voltage = <0x90>;	//REG0x20
+	vib-odclamp-time = <0x0C>;	//REG0x29
+	vib-lra-frequency = <204>;
+	pinctrl-names = "reset-gpio_high","reset-gpio_low";
+	pinctrl-0 = <&vib_reset_high>;
+	pinctrl-1 = <&vib_reset_low>;
+};
+/*vibrator GPIO end*/
+
+
+&i2c1 {
+		htc_vibrator@5A{
+				compatible = "htc_vibrator";
+				reg = <0x5A>;
+		};
+};
+
+/* Vibrator end*/

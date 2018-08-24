@@ -1,0 +1,43 @@
+
+//HTC laser start
+&i2c1{
+    laser@29 {
+            compatible = "mediatek,vl6180";
+            reg = <0x29>;
+    };
+};
+
+&pio {
+	laser_pins_default: default {
+	};
+
+	laser_pins_focus_enable_0: laser_enable0@0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO42__FUNC_GPIO42>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+
+	laser_pins_interrput: laser_interrput@1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO102__FUNC_GPIO102>;
+			slew-rate = <0>;
+			bias-disable;
+		};
+	};
+
+};
+
+
+&laser{
+	laser_en = <42>;
+	laser_irq = <102>;
+	pinctrl-names = "default", "laser_init_cfg";
+	pinctrl-0 = <&laser_pins_default>;
+	pinctrl-1 = <&laser_pins_focus_enable_0 &laser_pins_interrput>;
+
+	status = "okay";
+  };
+

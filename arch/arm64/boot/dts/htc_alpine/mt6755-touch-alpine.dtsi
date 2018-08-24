@@ -1,0 +1,584 @@
+/ {
+	touch_fw_update {
+		compatible = "htc,touch_fwu";
+	};
+
+	soc {
+		touch {
+			compatible = "mediatek,TOUCH_PANEL-eint";
+			interrupt-parent = <&eintc>;
+			interrupts = <9 IRQ_TYPE_LEVEL_LOW>;
+			debounce = <9 0>;
+			status = "okay";
+		};
+	};
+};
+
+&pio {
+	ts_int_default: ts_int_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO9__FUNC_GPIO9>;
+			slew-rate = <0>;	/* INPUT */
+			bias-pull-up = <00>;
+		};
+	};
+
+/*  use ioexp 15
+	ts_reset_active: ts_reset_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;	// OUTPUT
+			output-low;
+		};
+	};
+	ts_reset_inactive: ts_reset_inactive {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;	// OUTPUT
+			output-high;
+		};
+	};
+*/
+
+	ts_di_power_active: ts_di_power_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
+			slew-rate = <1>;	/* OUTPUT */
+			output-high;
+		};
+	};
+
+	ts_di_power_suspend: ts_di_power_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
+			slew-rate = <1>;	/* OUTPUT */
+			output-low;
+		};
+	};
+
+	ts_an_power_active: ts_an_power_active {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO79__FUNC_GPIO79>;
+			slew-rate = <1>;	// OUTPUT
+			output-high;
+		};
+*/
+	};
+
+	ts_an_power_suspend: ts_an_power_suspend {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO79__FUNC_GPIO79>;
+			slew-rate = <1>;	// OUTPUT
+			output-low;
+		};
+*/
+	};
+
+	ts_i2c_switch_select_cpu: ts_i2c_switch_select_cpu {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO110__FUNC_GPIO110>;
+			slew-rate = <1>;	// OUTPUT
+			output-low;
+		};
+	};
+
+	ts_i2c_switch_select_shub: ts_i2c_switch_select_shub {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO110__FUNC_GPIO110>;
+			slew-rate = <1>;	// OUTPUT
+			output-high;
+		};
+	};
+
+	ts_i2c0_sda: ts_i2c0_sda {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO92__FUNC_SDA0>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+*/
+	};
+
+	ts_i2c0_scl: ts_i2c0_scl {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO93__FUNC_SCL0>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+*/
+	};
+
+};
+
+
+&tca6418 {
+	ts_reset_active: ts_reset_active {
+		config {
+			pins = "gpio15";
+			output-low;
+			bias-disable;
+		};
+	};
+	ts_reset_inactive: ts_reset_inactive {
+		config {
+			pins = "gpio15";
+			output-high;
+			bias-disable;
+		};
+	};
+};
+
+&i2c0 {
+/*
+	himax@48 {
+		compatible		= "himax,852xes";
+		reg			= <0x48>;
+		status			= "okay";
+		himax,panel-coords	= <0 1080 0 1920>;
+		himax,display-coords	= <0 720 0 1280>;
+		himax,irq-gpio		= <9>;
+		himax,rst-gpio		= <15>;
+		himax,1v8-gpio		= <6>;
+		himax,3v3-gpio		= <79>;
+		update_feature		= <0>;
+		report_type		= <1>;
+		hall_block_touch_time	= <1000>;	// msec
+		pinctrl-names = "pmx_ts_reset_active", "pmx_ts_reset_inactive",
+				"pmx_ts_active", "pmx_ts_suspend";
+		pinctrl-0 = <&ts_reset_active>;
+		pinctrl-1 = <&ts_reset_inactive>;
+		pinctrl-2 = <&ts_int_default &ts_reset_inactive &ts_di_power_active>;
+		pinctrl-3 = <&ts_int_default &ts_reset_inactive &ts_di_power_suspend>;
+
+		config2 {	//Tianma, main
+			fw_ver		= <0x12>;
+			sensor_id	= <0x21>;
+//FIXME			cover_support;
+			c1 =[ 5B 02 00 02 00 00 00 00 00 00 00];
+			c2 =[ 5C 02 00 12 00 00 00 00 00 00 00];
+			c3 =[ 5D 02 00 02 01 00 00 00 00 00 00];
+			c4 =[ 5E 02 00 12 00 00 00 00 00 00 00];
+			c5 =[ 5F 02 00 32 01 00 00 00 00 00 00];
+			c6 =[ 60 02 00 12 03 00 00 00 00 00 00];
+			c7 =[ 61 02 00 32 01 00 00 00 00 00 00];
+			c8 =[ 62 02 00 12 03 00 00 00 00 00 00];
+			c9 =[ 63 02 00 32 01 00 00 00 00 00 00];
+			c10 = [ 64 02 00 12 03 00 00 00 00 00 00];
+			c11 = [ 65 02 00 32 01 00 00 00 00 00 00];
+			c12 = [ 66 02 00 12 03 00 00 00 00 00 00];
+			c13 = [ 67 00 00 30 01 00 00 00 00 00 00];
+			c14 = [ 68 00 00 00 00 00 00 00 00 00 00];
+			c15 = [ 69 00 00 00 00 00 00 00 00 00 00];
+			c16 = [ 6A 00 00 20 00 00 00 00 00 00 00];
+			c17 = [ 6B 01 00 01 02 00 00 00 00 00 00];
+			c18 = [ D5 29 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00];
+			c19 = [ E1 07 01 02 02 02 03 07 03 0F 03 0F 02 0F 08]; //
+			c20 = [ BC 08 00 00 00]; //
+			c21 = [ C5 0A 1F 00 10 18 1A 0B 1F 02 1F]; //Self Setting
+			c22 = [ C6 18 10 19]; //Mutual Setting
+			c23 = [ BD 00 0B]; //SETCLK12
+			c24 = [ B9 01 05]; //SET CVDD
+			c25 = [ EC 10 9E 8D]; //SET PTBA
+			c26 = [ B0 00]; //TX Floating
+			c27 = [ DD 03]; //Set Cache
+			c28 = [ 42 02]; //Reload Disable
+			c29 = [ CE 00]; //HW Watch Dog
+			c30 = [ CA 00]; //ESD Detector
+			c31 = [ 3F 00]; //Dual Mode
+			c32 = [ EB 03]; //SET AP
+			c33 = [ BA 00]; //SET EQ
+			c34 = [ BB 00]; //D0200 added.
+			c35 = [ D3 06 01]; //TX Pumping Postivite
+			c36 = [ 37 FF 08 FF 08]; //POWRSTB
+			c37 = [ A4 94 62 94 86]; //Dual Mode
+			c38 = [ ED 00 04 0A 0A 04 00 00 00]; //SET CLK
+			c39 = [ CB 00 0F 0F FF FF 01 00 0F 00 32
+				00 FF 00]; //GPIO_EN
+			c40 = [ 40 03 5A //Customer Info
+				5F 00 F0 10 04 00 //Switch
+				1C 0A 0C 10 09 09 09 0F 0F 0F //Threshold
+				20 20 30 30 40 3C A6 05 00 00 00 00 //Weighting
+				94 0A F0 11 44 00 //Stability
+				44 24 0F 0F 83 3C 00 00 //Palm
+				11 00 41 42 //Enter
+				1F 5F 00 12 00 00 //CCL
+				08 01 3C 64 00 00 //Timer
+				18 37 37 05 1F 02 00 00 //OSR Hopping
+				04 06 24 07 07 00 00 00 //TX Hopping
+				3F 40 0A 54 00 D8 8C 20 00 02
+				03 10 00 00 00 00 //Idle
+				10 02 80 00 00 00 00 0C //Water
+				10 00 20 18 03 07 0B 00 //MKey
+				C8 78 28 00 //Bank
+				0D 17 A0 13 //Channel
+				00 00 02 D0 05 00 //Resolution
+				05 FE 0D 7C 66 11 08 00 BC 03 06 5B DC 0A //Fitting Curve 1
+				07 93 11 0A 6A F5 00 01 0E 04 58 5F 31 00 //Fitting Curve 2
+				00 01 00 00 00 00 00 00]; //OLM Gen1 Pattern
+			c41 = [ 40 FF 0D 0E 0F 10 11 12 13 14 15 //Channel 01~17
+				16 17 18 FF FF FF 00
+				01 02 03 04 05 06 07 08 09 0A //Channel 18~34
+				0B 0C FF FF FF 23 22
+				FF FF FF FF 21 20 1F 1E 1D 1C //Channel 35~51
+				1B 1A 19 FF FF FF FF
+				FF FF FF	//Channel 52~54
+				00 00 00 00 00 00 //Noise Matrix
+				00 00 00 00 00 00 //Reserve
+				00 00 00 00 00 00 //Reserve
+				00 8F 00 00 00 00 00 00 //Sensor Hub Gesture for HTC
+				11 C4 45 C5 48 5C 03 55 00 00 //High Sensitivity Mode
+				00 00 00 00 00 00 //Reserve
+				00 00]; //Checksum
+		};
+
+		config1 {	//Truly
+			fw_ver		= <0x12>;
+			sensor_id	= <0x22>;
+//FIXME			cover_support;
+			c1 =[ 5B 02 00 02 00 00 00 00 00 00 00];
+			c2 =[ 5C 02 00 12 00 00 00 00 00 00 00];
+			c3 =[ 5D 02 00 02 01 00 00 00 00 00 00];
+			c4 =[ 5E 02 00 12 00 00 00 00 00 00 00];
+			c5 =[ 5F 02 00 32 01 00 00 00 00 00 00];
+			c6 =[ 60 02 00 12 03 00 00 00 00 00 00];
+			c7 =[ 61 02 00 32 01 00 00 00 00 00 00];
+			c8 =[ 62 02 00 12 03 00 00 00 00 00 00];
+			c9 =[ 63 02 00 32 01 00 00 00 00 00 00];
+			c10 = [ 64 02 00 12 03 00 00 00 00 00 00];
+			c11 = [ 65 02 00 32 01 00 00 00 00 00 00];
+			c12 = [ 66 02 00 12 03 00 00 00 00 00 00];
+			c13 = [ 67 00 00 30 01 00 00 00 00 00 00];
+			c14 = [ 68 00 00 00 00 00 00 00 00 00 00];
+			c15 = [ 69 00 00 00 00 00 00 00 00 00 00];
+			c16 = [ 6A 00 00 20 00 00 00 00 00 00 00];
+			c17 = [ 6B 01 00 01 02 00 00 00 00 00 00];
+			c18 = [ D5 29 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00];
+			c19 = [ E1 07 01 02 02 02 03 07 03 0F 03 0F 02 0F 08]; //
+			c20 = [ BC 08 00 00 00]; //
+			c21 = [ C5 0A 1F 00 10 18 1A 0B 1F 02 1F]; //Self Setting
+			c22 = [ C6 18 10 19]; //Mutual Setting
+			c23 = [ BD 00 0B]; //SETCLK12
+			c24 = [ B9 01 05]; //SET CVDD
+			c25 = [ EC 10 9E 8D]; //SET PTBA
+			c26 = [ B0 00]; //TX Floating
+			c27 = [ DD 03]; //Set Cache
+			c28 = [ 42 02]; //Reload Disable
+			c29 = [ CE 00]; //HW Watch Dog
+			c30 = [ CA 00]; //ESD Detector
+			c31 = [ 3F 00]; //Dual Mode
+			c32 = [ EB 03]; //SET AP
+			c33 = [ BA 00]; //SET EQ
+			c34 = [ BB 00]; //D0200 added.
+			c35 = [ D3 06 01]; //TX Pumping Postivite
+			c36 = [ 37 FF 08 FF 08]; //POWRSTB
+			c37 = [ A4 94 62 94 86]; //Dual Mode
+			c38 = [ ED 00 04 0A 0A 04 00 00 00]; //SET CLK
+			c39 = [ CB 00 0F 0F FF FF 01 00 0F 00 32
+				00 FF 00]; //GPIO_EN
+			c40 = [ 40 03 5A //Customer Info
+				5F 00 F0 10 04 00 //Switch
+				1C 0A 0C 10 09 09 09 0F 0F 0F //Threshold
+				20 20 30 30 40 3C A6 05 00 00 00 00 //Weighting
+				94 0A F0 11 44 00 //Stability
+				44 24 0F 0F 83 3C 00 00 //Palm
+				11 00 41 42 //Enter
+				1F 5F 00 12 00 00 //CCL
+				08 01 3C 64 00 00 //Timer
+				18 37 37 05 1F 02 00 00 //OSR Hopping
+				04 06 24 07 07 00 00 00 //TX Hopping
+				3F 40 0A 54 00 D8 8C 20 00 02
+				03 10 00 00 00 00 //Idle
+				10 02 80 00 00 00 00 0C //Water
+				10 00 20 18 03 07 0B 00 //MKey
+				C8 78 28 00 //Bank
+				0D 17 A0 13 //Channel
+				00 00 02 D0 05 00 //Resolution
+				05 FE 0D 7C 66 11 08 00 BC 03 06 5B DC 0A //Fitting Curve 1
+				07 93 11 0A 6A F5 00 01 0E 04 58 5F 31 00 //Fitting Curve 2
+				00 01 00 00 00 00 00 00]; //OLM Gen1 Pattern
+			c41 = [ 40 FF 0D 0E 0F 10 11 12 13 14 15 //Channel 01~17
+				16 17 18 FF FF FF 00
+				01 02 03 04 05 06 07 08 09 0A //Channel 18~34
+				0B 0C FF FF FF 23 22
+				FF FF FF FF 21 20 1F 1E 1D 1C //Channel 35~51
+				1B 1A 19 FF FF FF FF
+				FF FF FF	//Channel 52~54
+				00 00 00 00 00 00 //Noise Matrix
+				00 00 00 00 00 00 //Reserve
+				00 00 00 00 00 00 //Reserve
+				00 8F 00 00 00 00 00 00 //Sensor Hub Gesture for HTC
+				11 C4 45 C5 48 5C 03 55 00 00 //High Sensitivity Mode
+				00 00 00 00 00 00 //Reserve
+				00 00]; //Checksum
+		};
+
+		config_3 {	//Reserved
+			fw_ver		= <0x12>;
+			sensor_id	= <0x12>;
+//FIXME			cover_support;
+			c1 =[ 5B 02 00 02 00 00 00 00 00 00 00];
+			c2 =[ 5C 02 00 12 00 00 00 00 00 00 00];
+			c3 =[ 5D 02 00 02 01 00 00 00 00 00 00];
+			c4 =[ 5E 02 00 12 00 00 00 00 00 00 00];
+			c5 =[ 5F 02 00 32 01 00 00 00 00 00 00];
+			c6 =[ 60 02 00 12 03 00 00 00 00 00 00];
+			c7 =[ 61 02 00 32 01 00 00 00 00 00 00];
+			c8 =[ 62 02 00 12 03 00 00 00 00 00 00];
+			c9 =[ 63 02 00 32 01 00 00 00 00 00 00];
+			c10 = [ 64 02 00 12 03 00 00 00 00 00 00];
+			c11 = [ 65 02 00 32 01 00 00 00 00 00 00];
+			c12 = [ 66 02 00 12 03 00 00 00 00 00 00];
+			c13 = [ 67 00 00 30 01 00 00 00 00 00 00];
+			c14 = [ 68 00 00 00 00 00 00 00 00 00 00];
+			c15 = [ 69 00 00 00 00 00 00 00 00 00 00];
+			c16 = [ 6A 00 00 20 00 00 00 00 00 00 00];
+			c17 = [ 6B 01 00 01 02 00 00 00 00 00 00];
+			c18 = [ D5 29 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00];
+			c19 = [ E1 07 01 02 02 02 03 07 03 0F 03 0F 02 0F 08]; //
+			c20 = [ BC 08 00 00 00]; //
+			c21 = [ C5 0A 1F 00 10 18 1A 0B 1F 02 1F]; //Self Setting
+			c22 = [ C6 18 10 19]; //Mutual Setting
+			c23 = [ BD 00 0B]; //SETCLK12
+			c24 = [ B9 01 05]; //SET CVDD
+			c25 = [ EC 10 9E 8D]; //SET PTBA
+			c26 = [ B0 00]; //TX Floating
+			c27 = [ DD 03]; //Set Cache
+			c28 = [ 42 02]; //Reload Disable
+			c29 = [ CE 00]; //HW Watch Dog
+			c30 = [ CA 00]; //ESD Detector
+			c31 = [ 3F 00]; //Dual Mode
+			c32 = [ EB 03]; //SET AP
+			c33 = [ BA 00]; //SET EQ
+			c34 = [ BB 00]; //D0200 added.
+			c35 = [ D3 06 01]; //TX Pumping Postivite
+			c36 = [ 37 FF 08 FF 08]; //POWRSTB
+			c37 = [ A4 94 62 94 86]; //Dual Mode
+			c38 = [ ED 00 04 0A 0A 04 00 00 00]; //SET CLK
+			c39 = [ CB 00 0F 0F FF FF 01 00 0F 00 32
+				00 FF 00]; //GPIO_EN
+			c40 = [ 40 03 5A //Customer Info
+				5F 00 F0 10 04 00 //Switch
+				1C 0A 0C 10 09 09 09 0F 0F 0F //Threshold
+				20 20 30 30 40 3C A6 05 00 00 00 00 //Weighting
+				94 0A F0 11 44 00 //Stability
+				44 24 0F 0F 83 3C 00 00 //Palm
+				11 00 41 42 //Enter
+				1F 5F 00 12 00 00 //CCL
+				08 01 3C 64 00 00 //Timer
+				18 37 37 05 1F 02 00 00 //OSR Hopping
+				04 06 24 07 07 00 00 00 //TX Hopping
+				3F 40 0A 54 00 D8 8C 20 00 02
+				03 10 00 00 00 00 //Idle
+				10 02 80 00 00 00 00 0C //Water
+				10 00 20 18 03 07 0B 00 //MKey
+				C8 78 28 00 //Bank
+				0D 17 A0 13 //Channel
+				00 00 02 D0 05 00 //Resolution
+				05 FE 0D 7C 66 11 08 00 BC 03 06 5B DC 0A //Fitting Curve 1
+				07 93 11 0A 6A F5 00 01 0E 04 58 5F 31 00 //Fitting Curve 2
+				00 01 00 00 00 00 00 00]; //OLM Gen1 Pattern
+			c41 = [ 40 FF 0D 0E 0F 10 11 12 13 14 15 //Channel 01~17
+				16 17 18 FF FF FF 00
+				01 02 03 04 05 06 07 08 09 0A //Channel 18~34
+				0B 0C FF FF FF 23 22
+				FF FF FF FF 21 20 1F 1E 1D 1C //Channel 35~51
+				1B 1A 19 FF FF FF FF
+				FF FF FF	//Channel 52~54
+				00 00 00 00 00 00 //Noise Matrix
+				00 00 00 00 00 00 //Reserve
+				00 00 00 00 00 00 //Reserve
+				00 8F 00 00 00 00 00 00 //Sensor Hub Gesture for HTC
+				11 C4 45 C5 48 5C 03 55 00 00 //High Sensitivity Mode
+				00 00 00 00 00 00 //Reserve
+				00 00]; //Checksum
+		};
+
+		config_fake {	//semi Truly GFF
+			fw_ver		= <0x12>;
+			sensor_id	= <0x11>;
+			c1 =  [ 5B 02 00 02 00 00 00 00 00 00 00];
+			c2 =  [ 5C 02 00 12 00 00 00 00 00 00 00];
+			c3 =  [ 5D 02 00 02 01 00 00 00 00 00 00];
+			c4 =  [ 5E 02 00 12 00 00 00 00 00 00 00];
+			c5 =  [ 5F 02 00 32 01 00 00 00 00 00 00];
+			c6 =  [ 60 02 00 12 03 00 00 00 00 00 00];
+			c7 =  [ 61 02 00 32 01 00 00 00 00 00 00];
+			c8 =  [ 62 02 00 12 03 00 00 00 00 00 00];
+			c9 =  [ 63 02 00 32 01 00 00 00 00 00 00];
+			c10 = [ 64 02 00 12 03 00 00 00 00 00 00];
+			c11 = [ 65 02 00 32 01 00 00 00 00 00 00];
+			c12 = [ 66 02 00 12 03 00 00 00 00 00 00];
+			c13 = [ 67 00 00 30 01 00 00 00 00 00 00];
+			c14 = [ 68 00 00 00 00 00 00 00 00 00 00];
+			c15 = [ 69 00 00 00 00 00 00 00 00 00 00];
+			c16 = [ 6A 00 00 20 00 00 00 00 00 00 00];
+			c17 = [ 6B 01 00 01 02 00 00 00 00 00 00];
+			c18 = [ D5 29 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00];
+			c19 = [ E1 07 01 02 02 02 03 07 03 0F 03 0F 02 0F 08];
+			c20 = [ BC 08 00 00 00];
+			c21 = [ C5 0A 1F 00 10 18 1A 0B 1F 02 1F]; //Self Setting
+			c22 = [ C6 18 10 1C]; //Mutual Setting
+			c23 = [ BD 00 0B]; //SETCLK12
+			c24 = [ B9 01 05]; //SET CVDD
+			c25 = [ EC 10 9E 8D]; //SET PTBA
+			c26 = [ B0 00]; //TX Floating
+			c27 = [ DD 03]; //Set Cache
+			c28 = [ 42 02]; //Reload Disable
+			c29 = [ CE 00]; //HW Watch Dog
+			c30 = [ CA 00]; //ESD Detector
+			c31 = [ 3F 00]; //Dual Mode
+			c32 = [ EB 03]; //SET AP
+			c33 = [ BA 00]; //SET EQ
+			c34 = [ BB 00]; //D0200 added
+			c35 = [ D3 06 01]; //TX Pumping Postivite
+			c36 = [ 37 FF 08 FF 08]; //POWRSTB
+			c37 = [ A4 94 62 94 86]; //Dual Mode
+			c38 = [ ED 00 04 0A 0A 04 00 00 00]; //SET CLK
+			c39 = [ CB 00 0F 0F FF FF 01 00 0F 00 32
+				00 FF 00]; //GPIO_EN
+			c40 = [ 40 04 5A                         //Customer Info
+				5F 00 F0 10 44 00                //Switch
+				1C 0C 0B 0C 09 09 09 0F 0F 0F    //Threshold
+				38 30 40 40 30 00 00 00 00 00 00 00 //Weighting
+				94 0A F0 11 44 00                //Stability
+				44 22 0F 0F 83 3C 00 00          //Palm
+				11 00 41 42                      //Enter
+				18 48 00 12 00 00                //CCL
+				08 01 3C 64 00 00                //Timer
+				18 37 37 05 1F 02 00 00          //OSR Hopping
+				04 06 24 07 07 00 00 00          //TX Hopping
+				3D 40 0A 54 00 D8 8C 20 00 02
+				03 10 00 00 00 00                //Idle
+				10 02 80 00 00 00 00 0C          //Water
+				10 00 20 18 03 07 0B 00          //MKey
+				C8 78 28 00                      //Bank
+				0D 17 A0 13                      //Channel
+				00 00 02 D0 05 00                //Resolution
+				05 FE 0D 7C 66 11 08 00 BC 03 06 5B DC 0A //Fitting Curve 1
+				07 93 11 0A 6A F5 00 01 0E 04 58 5F 31 00 //Fitting Curve 2
+				00 00 00 00 00 00 00 00];        //OLM Gen1 Pattern
+			c41 = [ 40 FF 0D 0E 0F 10 11 12 13 14 15 //Channel 01~17
+				16 17 18 FF FF FF 00
+				01 02 03 04 05 06 07 08 09 0A 	 //Channel 18~34
+				0B 0C FF FF FF 23 22
+				FF FF FF FF 21 20 1F 1E 1D 1C    //Channel 35~51
+				1B 1A 19 FF FF FF FF
+				FF FF FF                         //Channel 52~54
+				00 00 00 00 00 00                //Noise Matrix
+				00 00 00 00 00 00                //Reserve
+				00 00 00 00 00 00                //Reserve
+				00 8F 00 00 00 00 00 00          //Sensor Hub Gesture for HTC
+				11 C4 45 C5 48 5C 03 55 00 00    //High Sensitivity Mode
+				00 00 00 00 00 00 //Reserve
+				00 00]; //Checksum
+		};
+	};
+*/
+	tsc@24 {
+		compatible = "cy,cyttsp5_i2c_adapter";
+		reg = <0x24>;
+		//interrupt-parent = <&msmgpio>;
+		//interrupts = <59 0x2>;
+		pinctrl-names = "rst_gpio_ioexp_active", "rst_gpio_ioexp_inactive",
+				"TP_1V8_EN_HIGH", "TP_1V8_EN_LOW",
+				"TP_I2C_SEL_CPU", "TP_I2C_SEL_SHUB",
+				"TP_I2C_SDA", "TP_I2C_SCL";
+		pinctrl-0 = <&ts_reset_active>;
+		pinctrl-1 = <&ts_reset_inactive>;
+		pinctrl-2 = <&ts_di_power_active>;
+		pinctrl-3 = <&ts_di_power_suspend>;
+		pinctrl-4 = <&ts_i2c_switch_select_cpu>;
+		pinctrl-5 = <&ts_i2c_switch_select_shub>;
+		pinctrl-6 = <&ts_i2c0_sda>;
+		pinctrl-7 = <&ts_i2c0_scl>;
+		cy,adapter_id = "cyttsp5_i2c_adapter";
+		cy,core {
+			cy,name = "cyttsp5_core";
+			cy,irq_gpio = <9>;
+//			cy,rst_gpio_ioexp = <15> //use ioexp 15
+			cy,rst_gpio_ioexp = <&tca6418 15 0>; //htc
+			cy,TP_1V8_EN_gpio = <6>; //htc
+			cy,TP_I2C_SEL_CPU_gpio = <110>; //htc
+			cy,hid_desc_register = <1>;
+			/* CY_CORE_FLAG_RESTORE_PARAMETERS */
+			cy,flags = <4>;
+			/* CY_CORE_EWG_NONE */
+			cy,easy_wakeup_gesture = <0>;
+			cy,btn_keys = <172 /* KEY_HOMEPAGE */
+						/* previously was KEY_HOME, new Android versions use KEY_HOMEPAGE */
+			               139 /* KEY_MENU */
+			               158 /* KEY_BACK */
+			               217 /* KEY_SEARCH */
+			               114 /* KEY_VOLUMEDOWN */
+			               115 /* KEY_VOLUMEUP */
+			               212 /* KEY_CAMERA */
+			               116>; /* KEY_POWER */
+			cy,btn_keys-tag = <0>;
+			cy,mt {
+				cy,name = "cyttsp5_mt";
+				cy,inp_dev_name = "cyttsp5_mt";
+				cy,flags = <0>;
+				cy,abs =
+					/* ABS_MT_POSITION_X, CY_ABS_MIN_X, CY_ABS_MAX_X, 0, 0 */
+					<0x35 0 1080 0 0
+					/* ABS_MT_POSITION_Y, CY_ABS_MIN_Y, CY_ABS_MAX_Y, 0, 0 */
+					0x36 0 1920 0 0
+					/* ABS_MT_PRESSURE, CY_ABS_MIN_P, CY_ABS_MAX_P, 0, 0 */
+					0x3a 0 255 0 0
+					/* CY_IGNORE_VALUE, CY_ABS_MIN_W, CY_ABS_MAX_W, 0, 0 */
+					0xffff 0 255 0 0
+					/* ABS_MT_TRACKING_ID, CY_ABS_MIN_T, CY_ABS_MAX_T, 0, 0 */
+					0x39 0 15 0 0
+					/* ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0 */
+					0x30 0 255 0 0
+					/* ABS_MT_TOUCH_MINOR, 0, 255, 0, 0 */
+					0x31 0 255 0 0
+					/* ABS_MT_ORIENTATION, -127, 127, 0, 0 */
+					0x34 0xffffff81 127 0 0
+					/* ABS_MT_TOOL_TYPE, 0, MT_TOOL_MAX, 0, 0 */
+					/*0x37 0 1 0 0 */
+					0xffff 0 1 0 0  //0xffff means -1
+					/* ABS_MT_DISTANCE, 0, 255, 0, 0 */
+					0x3b 0 255 0 0>;
+
+				cy,vkeys_x = <720>;
+				cy,vkeys_y = <1280>;
+
+				cy,virtual_keys = /* KeyCode CenterX CenterY Width Height */
+					/* KEY_BACK */
+					<158 1360 90 160 180
+					/* KEY_MENU */
+					139 1360 270 160 180
+					/* KEY_HOMEPAGE */
+					172 1360 450 160 180
+					/* KEY SEARCH */
+					217 1360 630 160 180>;
+			};
+
+			cy,btn {
+				cy,name = "cyttsp5_btn";
+				cy,inp_dev_name = "cyttsp5_btn";
+			};
+
+			cy,proximity {
+				cy,name = "cyttsp5_proximity";
+				cy,inp_dev_name = "cyttsp5_proximity";
+				cy,abs =
+					/* ABS_DISTANCE, CY_PROXIMITY_MIN_VAL, CY_PROXIMITY_MAX_VAL, 0, 0 */
+					<0x19 0 1 0 0>;
+			};
+		};
+	};
+};

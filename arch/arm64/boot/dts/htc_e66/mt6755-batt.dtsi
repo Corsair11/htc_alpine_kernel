@@ -1,0 +1,34 @@
+/* Battery GPIO start*/
+&pio {
+	batt_gpio_set: batt_gpio_set{
+
+	    pins_cmd0_dat {
+			pins = <PINMUX_GPIO19__FUNC_GPIO19>;
+			slew-rate = <0>;
+			bias-disable;
+		};
+	    pins_cmd1_dat {
+			pins = <PINMUX_GPIO20__FUNC_GPIO20>;
+			slew-rate = <0>;
+			bias-disable;
+		};
+	    pins_cmd2_dat {
+			pins = <PINMUX_GPIO100__FUNC_GPIO100>;
+			slew-rate = <0>;
+		};
+	    pins_cmd3_dat {
+			pins = <PINMUX_GPIO101__FUNC_GPIO101>;
+			slew-rate = <0>;
+		};
+	};
+};
+&battery {
+	batt_ovp = <20>;
+	batt_chgin = <19>;
+	batt_chgen = <100>;
+	batt_chgeint = <101>;
+	pinctrl-names = "batt_gpio_set";
+	pinctrl-0 = <&batt_gpio_set>;
+	status = "okay";
+};
+/*Battery GPIO end*/

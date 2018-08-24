@@ -1,0 +1,91 @@
+MTK_PLATFORM := $(subst ",,$(CONFIG_MTK_PLATFORM))
+ARCH_MTK_PROJECT := $(subst ",,$(CONFIG_ARCH_MTK_PROJECT))
+
+MTK_CUSTOM_PATH  := $(srctree)/drivers/misc/mediatek
+
+ifneq ($(CONFIG_ARM64), y)
+# For arm32, mach folder
+MTK_PLATFORM_PATH_ROOT := $(srctree)/arch/arm/mach-$(MTK_PLATFORM)
+MTK_PROJECT_PATH_ROOT := $(srctree)/arch/arm/mach-$(MTK_PLATFORM)/$(ARCH_MTK_PROJECT)
+  ifneq ($(filter y,$(CONFIG_ARCH_MT6752) $(CONFIG_ARCH_MT6732) $(CONFIG_ARCH_MT6595) $(CONFIG_ARCH_MT6755) $(CONFIG_ARCH_MT6735) $(CONFIG_ARCH_MT6735M) $(CONFIG_ARCH_MT6753) $(CONFIG_ARCH_MT6580)),)
+    # For armv8 32bit
+    MTK_PLATFORM_PATH_ROOT := $(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)
+    MTK_PROJECT_PATH_ROOT := $(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/$(ARCH_MTK_PROJECT)
+  endif
+else
+# For arm64, no mach-xxx folder
+MTK_PATH_ROOT := $(srctree)/drivers/misc/mediatek/
+MTK_PLATFORM_PATH_ROOT := $(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)
+MTK_PROJECT_PATH_ROOT := $(srctree)/drivers/misc/mediatek/mach/$(MTK_PLATFORM)/$(ARCH_MTK_PROJECT)
+endif
+
+# to use arch/arm/mach-mt2601/flora01v1/lcm/inc/lcm_drv.h instead of drivers/misc/mediatek/lcm/inc/lcm_drv.h
+ccflags-$(CONFIG_ARCH_MT2601) += -I$(MTK_PROJECT_PATH_ROOT)/lcm/inc
+
+
+ccflags-y += -I$(MTK_CUSTOM_PATH)/include/mt-plat \
+			 -I$(MTK_CUSTOM_PATH)/include \
+		 	 -I$(MTK_CUSTOM_PATH)/include/mt-plat/$(MTK_PLATFORM)/include \
+			 -I$(MTK_PLATFORM_PATH_ROOT)/include \
+             -I$(MTK_PROJECT_PATH_ROOT)/dct/dct 
+             #-I$(DRVGEN_OUT)/inc
+
+ccflags-y += -I$(MTK_CUSTOM_PATH)/accdet/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/accelerometer/inc \
+             -I$(MTK_CUSTOM_PATH)/alsps/inc \
+             -I$(MTK_CUSTOM_PATH)/hdmi/inc \
+             -I$(MTK_CUSTOM_PATH)/barometer/inc \
+             -I$(MTK_CUSTOM_PATH)/auxadc/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/cam_cal/inc \
+             -I$(MTK_CUSTOM_PATH)/camera/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/m4u/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/devinfo/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/dual_ccci/$(MTK_PLATFORM)/include \
+             -I$(MTK_CUSTOM_PATH)/dual_ccci/include \
+             -I$(MTK_CUSTOM_PATH)/flashlight/inc \
+             -I$(MTK_CUSTOM_PATH)/gyroscope/inc \
+             -I$(MTK_CUSTOM_PATH)/step_counter \
+             -I$(MTK_CUSTOM_PATH)/pedometer \
+             -I$(MTK_CUSTOM_PATH)/activity_sensor \
+             -I$(MTK_CUSTOM_PATH)/in_pocket_sensor \
+             -I$(MTK_CUSTOM_PATH)/face_down_sensor \
+             -I$(MTK_CUSTOM_PATH)/pick_up_sensor \
+             -I$(MTK_CUSTOM_PATH)/shake_sensor \
+             -I$(MTK_CUSTOM_PATH)/heart_rate_sensor \
+             -I$(MTK_CUSTOM_PATH)/gravity \
+             -I$(MTK_CUSTOM_PATH)/rotationvector \
+             -I$(MTK_CUSTOM_PATH)/linearacceleration \
+             -I$(MTK_CUSTOM_PATH)/gamerotationvector \
+             -I$(MTK_CUSTOM_PATH)/geomagneticrotationvector \
+             -I$(MTK_CUSTOM_PATH)/tilt_detector_sensor \
+             -I$(MTK_CUSTOM_PATH)/wake_gesture_sensor \
+             -I$(MTK_CUSTOM_PATH)/glance_gesture_sensor \
+             -I$(MTK_CUSTOM_PATH)/bringtosee \
+             -I$(MTK_CUSTOM_PATH)/i2c/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/imgsensor/inc \
+             -I$(MTK_CUSTOM_PATH)/eeprom/inc \
+             -I$(MTK_CUSTOM_PATH)/leds/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/lens/inc \
+             -I$(MTK_CUSTOM_PATH)/magnetometer/inc \
+             -I$(MTK_CUSTOM_PATH)/met/platform/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/met/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/sensorHub/inc \
+             -I$(MTK_CUSTOM_PATH)/smi/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/ssw/inc \
+             -I$(MTK_CUSTOM_PATH)/sync \
+             -I$(MTK_CUSTOM_PATH)/uart/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/vibrator/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/video/include \
+             -I$(MTK_CUSTOM_PATH)/video/common \
+             -I$(MTK_CUSTOM_PATH)/video/$(MTK_PLATFORM)/dispsys \
+             -I$(MTK_CUSTOM_PATH)/video/$(MTK_PLATFORM)/videox \
+             -I$(MTK_CUSTOM_PATH)/wdk \
+             -I$(MTK_CUSTOM_PATH)/mjc/v1.0 \
+             -I$(MTK_CUSTOM_PATH)/lcm \
+             -I$(MTK_CUSTOM_PATH)/lcm/inc \
+             -I$(MTK_CUSTOM_PATH)/rrc/v1.0 \
+             -I$(MTK_CUSTOM_PATH)/multibridge/$(MTK_PLATFORM)/mt8193/inc \
+             -I$(MTK_CUSTOM_PATH)/dum-char/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/freqhopping \
+             -I$(MTK_CUSTOM_PATH)/freqhopping/$(MTK_PLATFORM) \
+             -I$(MTK_CUSTOM_PATH)/btcvsd/inc/$(MTK_PLATFORM)

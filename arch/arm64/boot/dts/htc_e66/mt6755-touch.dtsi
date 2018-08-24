@@ -1,0 +1,53 @@
+/{
+	touch_fw_update {
+		compatible = "htc,touch_fwu";
+	};
+};
+
+&pio {
+	ts_pin_default: ts_pin_default {
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO1__FUNC_GPIO1>;
+			slew-rate = <0>;
+			bias-pull-up = <11>;
+			input-schmitt-enable = <0>;
+		};
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO10__FUNC_GPIO10>;
+			slew-rate = <1>;
+			output-high;
+			input-schmitt-enable = <0>;
+		};
+		
+		pins_cmd2_dat {
+			pins = <PINMUX_GPIO53__FUNC_GPIO53>;
+			slew-rate = <1>;
+			output-high;
+		};				
+	};
+};
+
+&i2c0 {
+	cap_touch@38 {
+		compatible		= "mediatek,cap_touch";
+		reg			= <0x38>;
+		status			= "okay";
+		focal,panel-coords	= <0 1080 0 1920>;
+		focal,display-coords	= <0 1080 0 1920>;
+		focal-key-num = <3>;
+		focal-key-local= <139 172 158 0>;
+		focal-key-dim-local = <200 2000 100 40 600 2000 100 40 800 2000 100 40 0 0 0 0>;
+		focal,irq-gpio		= <1>;
+		focal,rst-gpio		= <10>;
+		focal,i2c-sel-gpio	= <53>;
+		focal,1v8-gpio		= <22>;
+		focal,vdd-gpio		= <11>;
+		focal,vee-gpio		= <12>;
+		update_feature		= <0>;
+		report_type			= <1>;
+//		hall_block_touch_time	= <1000>;	/* msec */
+		pinctrl-names = "ft_ts_pin_default";
+		pinctrl-0 = <&ts_pin_default>;
+
+	};
+};

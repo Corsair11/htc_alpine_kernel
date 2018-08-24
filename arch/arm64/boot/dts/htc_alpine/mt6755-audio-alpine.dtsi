@@ -1,0 +1,160 @@
+
+/ {
+	audio-pinctrl {
+		compatible = "htc,audio_pinctrl";
+		status = "okay";
+
+		aud_usb_position_gpio = <79>;
+		aud_adaptor_mic_det_gpio = <115>;
+		aud_typec_id1_gpio = <120>;
+		aud_typec_id2_gpio = <122>;
+
+		pinctrl-names = "audio_pins_default","aud_miclr_flip_en_high","aud_miclr_flip_en_low","v_audio_switch_en_high","aud_hpmic_agnd_flip_en_s0_high","aud_hpmic_agnd_flip_en_s0_low","aud_hpmic_agnd_flip_en_s1_high","aud_hpmic_agnd_flip_en_s1_low","aud_hsmic_2v85_en_high","aud_hsmic_2v85_en_low", "aud_usb_position_default", "aud_adaptor_mic_det_default","aud_typec_id1_default","aud_typec_id2_default", "aud_hp_det_high", "aud_hp_det_low";
+
+		pinctrl-0 = <&audio_pins_default>;
+		pinctrl-1 = <&aud_miclr_flip_en_high>;
+		pinctrl-2 = <&aud_miclr_flip_en_low>;
+		pinctrl-3 = <&v_audio_switch_en_high>;
+		pinctrl-4 = <&aud_hpmic_agnd_flip_en_s0_high>;
+		pinctrl-5 = <&aud_hpmic_agnd_flip_en_s0_low>;
+		pinctrl-6 = <&aud_hpmic_agnd_flip_en_s1_high>;
+		pinctrl-7 = <&aud_hpmic_agnd_flip_en_s1_low>;
+		pinctrl-8 = <&aud_hsmic_2v85_en_high>;
+		pinctrl-9 = <&aud_hsmic_2v85_en_low>;
+
+		pinctrl-10 = <&aud_usb_position_default>;
+		pinctrl-11 = <&aud_adaptor_mic_det_default>;
+		pinctrl-12 = <&aud_typec_id1_default>;
+		pinctrl-13 = <&aud_typec_id2_default>;
+		pinctrl-14 = <&aud_hp_det_high>;
+		pinctrl-15 = <&aud_hp_det_low>;
+	};
+};
+
+&pio {
+	audio_pins_default: audio_pins_default {
+	};
+
+	aud_miclr_flip_en_high: aud_miclr_flip_en_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO119__FUNC_GPIO119>;
+			output-high;
+		};
+	};
+	aud_miclr_flip_en_low: aud_miclr_flip_en_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO119__FUNC_GPIO119>;
+			output-low;
+		};
+	};
+	aud_hp_det_low: aud_hp_det_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO56__FUNC_GPIO56>;
+			output-low;
+		};
+	};
+	aud_hp_det_high: aud_hp_det_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO56__FUNC_GPIO56>;
+			output-high;
+		};
+	};
+	aud_usb_position_default: aud_usb_position_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO79__FUNC_GPIO79>;
+			bias-disable;
+		};
+	};
+	aud_adaptor_mic_det_default: aud_adaptor_mic_det_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO115__FUNC_GPIO115>;
+			bias-disable;
+		};
+	};
+	aud_typec_id1_default: aud_typec_id1_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO120__FUNC_GPIO120>;
+			bias-disable;
+		};
+	};
+	aud_typec_id2_default: aud_typec_id2_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO122__FUNC_GPIO122>;
+			bias-disable;
+		};
+	};
+};
+
+
+&tca6418 {
+	v_audio_switch_en_high {
+		v_audio_switch_en_high: v_audio_switch_en_high {
+			config {
+				pins = "gpio0";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hpmic_agnd_flip_en_s0_high {
+		aud_hpmic_agnd_flip_en_s0_high: aud_hpmic_agnd_flip_en_s0_high {
+			config {
+				pins = "gpio5";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hpmic_agnd_flip_en_s0_low {
+		aud_hpmic_agnd_flip_en_s0_low: aud_hpmic_agnd_flip_en_s0_low {
+			config {
+				pins = "gpio5";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hpmic_agnd_flip_en_s1_high {
+		aud_hpmic_agnd_flip_en_s1_high: aud_hpmic_agnd_flip_en_s1_high {
+			config {
+				pins = "gpio6";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hpmic_agnd_flip_en_s1_low {
+		aud_hpmic_agnd_flip_en_s1_low: aud_hpmic_agnd_flip_en_s1_low {
+			config {
+				pins = "gpio6";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hsmic_2v85_en_high {
+		aud_hsmic_2v85_en_high: aud_hsmic_2v85_en_high {
+			config {
+				pins = "gpio7";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	aud_hsmic_2v85_en_low {
+		aud_hsmic_2v85_en_low: aud_hsmic_2v85_en_low {
+			config {
+				pins = "gpio7";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+};
+

@@ -1,0 +1,172 @@
+
+/* CAMERA GPIO standardization */
+&pio {
+	camera_pins_default: camdefault {
+	};
+
+	camera_pins_cam0_rst0: cam0_rst0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO110__FUNC_GPIO110>;
+			slew-rate = <1>; /*direction 0:in, 1:out*/
+			bias-disable;
+			output-low;/*direction out used only. output_low or high*/
+		};
+	};
+	camera_pins_cam0_rst1: cam0_rst1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO110__FUNC_GPIO110>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+	camera_pins_cam0_pnd0: cam0_pnd0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO107__FUNC_GPIO107>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	camera_pins_cam0_pnd1: cam0_pnd1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO107__FUNC_GPIO107>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+	camera_pins_cam1_rst0: cam1_rst0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO111__FUNC_GPIO111>;
+			slew-rate = <1>; /*direction 0:in, 1:out*/
+			bias-disable;
+			output-low;/*direction out used only. output_low or high*/
+		};
+	};
+	camera_pins_cam1_rst1: cam1_rst1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO111__FUNC_GPIO111>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+	camera_pins_cam1_pnd0: cam1_pnd0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	camera_pins_cam1_pnd1: cam1_pnd1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO15__FUNC_GPIO15>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+	
+	camera_pins_cam_ldo_vcama_0: cam_ldo_0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO14__FUNC_GPIO14>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	camera_pins_cam_ldo_vcama_1: cam_ldo_1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO14__FUNC_GPIO14>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+
+	camera_pins_cam_main_sel_0: cam_main_sel_0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO74__FUNC_GPIO74>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	
+	camera_pins_cam_main_sel_1: cam_main_sel_1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO74__FUNC_GPIO74>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+
+	camera_pins_cam_sub_sel_0: cam_sub_sel_0 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO87__FUNC_GPIO87>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+	};
+	
+	camera_pins_cam_sub_sel_1: cam_sub_sel_1 {
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO87__FUNC_GPIO87>;
+			slew-rate = <1>;
+			bias-disable;
+			output-high;
+		};
+	};
+};
+
+&kd_camera_hw1 {
+	cam_main_en 	= <14>;
+	cam_main_id 	= <74>;
+	cam_sub_id 	= <87>;
+	cam_main_pdn 	= <107>;
+	cam_sub_pdn 	= <15>;
+	cam_main_add 	= <110>;
+	cam_sub_add 	= <111>;
+
+	pinctrl-names = "default",
+			"cam0_rst0", "cam0_rst1", "cam0_pnd0", "cam0_pnd1",
+			"cam1_rst0", "cam1_rst1", "cam1_pnd0", "cam1_pnd1",
+			"cam_ldo_vcama_0", "cam_ldo_vcama_1", 
+			"cam_main_sel_0", "cam_main_sel_1", 
+			"cam_sub_sel_0", "cam_sub_sel_1", "init_cfg";
+			
+			/*"cam2_rst0", "cam2_rst1", "cam2_pnd0", "cam2_pnd1",
+        	        
+			"cam_ldo_vcama_0", "cam_ldo_vcama_1";*/
+      
+		     
+	pinctrl-0 = <&camera_pins_default>;
+	pinctrl-1 = <&camera_pins_cam0_rst0>;
+	pinctrl-2 = <&camera_pins_cam0_rst1>;
+	pinctrl-3 = <&camera_pins_cam0_pnd0>;
+	pinctrl-4 = <&camera_pins_cam0_pnd1>;
+	pinctrl-5 = <&camera_pins_cam1_rst0>;
+	pinctrl-6 = <&camera_pins_cam1_rst1>;
+	pinctrl-7 = <&camera_pins_cam1_pnd0>;
+	pinctrl-8 = <&camera_pins_cam1_pnd1>;
+	pinctrl-9 = <&camera_pins_cam_ldo_vcama_0>;
+	pinctrl-10 = <&camera_pins_cam_ldo_vcama_1>;
+	pinctrl-11 = <&camera_pins_cam_main_sel_0>;
+	pinctrl-12 = <&camera_pins_cam_main_sel_1>;
+	pinctrl-13 = <&camera_pins_cam_sub_sel_0>;
+	pinctrl-14 = <&camera_pins_cam_sub_sel_1>;
+	pinctrl-15 = <&camera_pins_cam0_rst0
+			&camera_pins_cam0_pnd0
+			&camera_pins_cam1_rst0
+			&camera_pins_cam1_pnd0
+			&camera_pins_cam_ldo_vcama_0
+			&camera_pins_cam_main_sel_0
+			&camera_pins_cam_sub_sel_0>;
+	status = "okay";
+
+};
+/* CAMERA GPIO end */

@@ -1,0 +1,188 @@
+/{
+/*
+	capsensor_fw_update {
+		compatible = "capsensor_fw_update";
+	};
+*/
+
+	soc {
+		vkey:vkey {
+			compatible = "mediatek,VIRTUAL_KEY-eint";
+			interrupt-parent = <&eintc>;
+			interrupts = <116 IRQ_TYPE_EDGE_FALLING>;
+			debounce = <116 0>;
+			status = "okay";
+		};
+	};
+};
+
+&pio {
+	cs_int_default: cs_int_default {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO116__FUNC_GPIO116>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	cs_reset_active: cs_reset_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO82__FUNC_GPIO82>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+	cs_reset_suspend: cs_reset_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO82__FUNC_GPIO82>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	cs_di_power_active: cs_di_power_active {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
+			slew-rate = <1>;
+			output-high;
+		};
+*/
+	};
+
+	cs_di_power_suspend: cs_di_power_suspend {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO6__FUNC_GPIO6>;
+			slew-rate = <1>;
+			output-low;
+		};
+*/
+	};
+
+	cs_an_power_active: cs_an_power_active {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO79__FUNC_GPIO79>;
+			slew-rate = <1>;
+			output-high;
+		};
+*/
+	};
+
+	cs_an_power_suspend: cs_an_power_suspend {
+/*
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO79__FUNC_GPIO79>;
+			slew-rate = <1>;
+			output-low;
+		};
+*/
+	};
+};
+
+&i2c0 {
+	virtualkey@4b {
+		compatible		= "himax,852xes_cap";
+		reg			= <0x4b>;
+		status			= "okay";
+		himax,panel-coords	= <0 1080 0 1920>;
+		himax,display-coords	= <0 720 0 1280>;
+		himax,irq-gpio		= <116>;
+		himax,rst-gpio		= <82>;
+//		himax,1v8-gpio		= <6>;
+//		himax,3v3-gpio		= <79>;
+		update_feature		= <0>;
+		report_type		= <1>;
+//		hall_block_touch_time	= <1000>;	/* msec */
+		pinctrl-names = "pmx_ts_att_default",
+				"pmx_ts_reset_active", "pmx_ts_reset_suspend",
+				"pmx_ts_power_on", "pmx_ts_power_off";
+		pinctrl-0 = <&cs_int_default>;
+		pinctrl-1 = <&cs_reset_active>;
+		pinctrl-2 = <&cs_reset_suspend>;
+		pinctrl-3 = <&cs_int_default &cs_di_power_active &cs_an_power_active>;
+		pinctrl-4 = <&cs_int_default &cs_di_power_suspend &cs_an_power_suspend>;
+
+		config0 {	//Preliminary
+			fw_ver		= <0x12>;
+			sensor_id	= <0x11>;
+			c1  = [ 5B 00 00 00 00 00 00 00 00 00 00];
+			c2  = [ 5C 00 00 00 00 00 00 00 00 00 00];
+			c3  = [ 5D 00 00 00 00 00 00 00 00 00 00];
+			c4  = [ 5E 00 00 00 00 00 00 00 00 00 00];
+			c5  = [ 5F 00 00 00 00 00 00 00 00 00 00];
+			c6  = [ 60 00 00 00 00 00 00 00 00 00 00];
+			c7  = [ 61 02 00 02 00 00 00 00 00 00 00];
+			c8  = [ 62 00 00 00 00 00 00 00 00 00 00];
+			c9  = [ 63 00 00 20 00 00 00 00 00 00 00];
+			c10 = [ 64 00 00 20 00 00 00 00 00 00 00];
+			c11 = [ 65 00 00 00 00 00 00 00 00 00 00];
+			c12 = [ 66 00 00 00 00 00 00 00 00 00 00];
+			c13 = [ 67 00 00 00 00 00 00 00 00 00 00];
+			c14 = [ 68 00 00 00 00 00 00 00 00 00 00];
+			c15 = [ 69 00 00 00 00 00 00 00 00 00 00];
+			c16 = [ 6A 00 00 00 00 00 00 00 00 00 00];
+			c17 = [ 6B 01 00 01 00 00 00 00 00 00 00];
+			c18 = [ D5 09 00 00 00 00 00 00 00 00 00
+				00 00 00 00 00 00];
+			c19 = [ E1 08 01 01 01 01 01 0F 01 0F 01 0F 01 0F 08]; //
+			c20 = [ BC 00 00 00 00]; //
+			c21 = [ C5 06 11 00 10 1A 1E 0B 11 02 1F]; //Self Setting
+			c22 = [ C6 15 10 19]; //Mutual Setting
+			c23 = [ BD 00 0B]; //SETCLK12
+			c24 = [ B9 01 05]; //SET CVDD
+			c25 = [ EC 10 DF 8D]; //SET PTBA
+			c26 = [ B0 00]; //TX Floating
+			c27 = [ DD 03]; //Set Cache
+			c28 = [ 42 02]; //Reload Disable
+			c29 = [ CE 00]; //HW Watch Dog
+			c30 = [ CA 00]; //ESD Detector
+			c31 = [ 3F 00]; //Dual Mode
+			c32 = [ EB 03]; //SET AP
+			c33 = [ BA 00]; //SET EQ
+			c34 = [ BB 00]; //D0200 added.
+			c35 = [ D3 06 01]; //TX Pumping Postivite
+			c36 = [ 37 FF 08 FF 08]; //POWRSTB
+			c37 = [ A4 94 62 94 86]; //Dual Mode
+			c38 = [ ED 00 04 0A 0A 04 00 00 00]; //SET CLK
+			c39 = [ CB 00 0F 0F FF FF 01 00 1F
+				00 32 00 FF 00]; //GPIO_EN
+			c40 = [ 40 00 5A //Customer Info
+				04 00 68 14 41 00 //Switch
+				3C 0C 0A 10 0A 0A 0A 0F 0F 0F //Threshold
+				18 14 40 40 24 00 00 00 00 00 00 00 //Weighting
+				63 0A F0 83 83 00 //Stability
+				15 12 0F 0F 83 3C 00 00 //Palm
+				11 00 41 42 //Enter
+				10 10 00 04 00 00 //CCL
+				0A 01 1E 64 00 00 //Timer
+				18 1F 1F 05 15 00 00 00 //OSR Hopping
+				04 06 24 07 07 00 00 00 //TX Hopping
+				2B 50 0A 2F 10 DF 8D 20 00 02
+				03 10 00 2E 00 00 //Idle
+				08 00 40 00 00 00 02 10 //Water
+				10 00 20 18 03 07 0B 00 //MKey
+				BE 5A 28 00 //Bank
+				02 01 20 12 //Channel
+				00 02 00 82 00 82 //Resolution
+				00 00 00 00 82 00 00 00 00 00 00 82 00 00 //Fitting Curve 1
+				00 00 00 00 82 00 00 00 00 00 00 82 00 00 //Fitting Curve 2
+				00 00 00 00 00 00 00 00]; //OLM Gen1 Pattern
+			c41 = [ 40 FF FF FF FF FF FF FF FF FF FF
+				FF FF FF FF FF FF 01
+				FF FF FF FF FF FF 00 FF 03 02
+				FF FF FF FF FF FF FF
+				FF FF FF FF FF FF FF FF FF FF
+				FF FF FF FF FF FF FF
+				FF FF FF
+				00 00 00 00 00 00 //Noise Matrix
+				00 00 00 00 00 00 //Reserve
+				00 00 00 00 00 00 //Reserve
+				1A 7D 12 32 82 C2 05 00//Sensor Hub Gesture for HTC
+				11 C4 45 C5 48 5C 03 55 00 00//High Sensitivity Mode
+				00 00 00 00 00 00 //Reserve
+				00 00]; //Checksum
+		};
+	};
+};

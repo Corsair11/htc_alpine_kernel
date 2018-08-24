@@ -1,0 +1,65 @@
+&tca6418 {
+	nfc-gpio_high {
+		nfc_sel_high: nfc_sel_high {
+			config {
+				pins = "gpio16";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	nfc-gpio_low {
+		nfc_sel_low: nfc_sel_low {
+			config {
+				pins = "gpio16";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+
+	nfc-fw_high {
+		nfc_fw_high: nfc_fw_high {
+			config {
+				pins = "gpio11";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	nfc-fw_low {
+		nfc_fw_low: nfc_fw_low {
+			config {
+				pins = "gpio11";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+};
+
+&i2c1 {
+	nxp_pn548_nfc@28 {
+		compatible = "nxp,pn548-nfc";
+		reg = <0x28>;
+		nxp,irq-gpio = <20>;
+		nxp,ven-gpio = <19>;
+		nxp,1v8-gpio = <8>;
+		nxp,fwdl-gpio = <&tca6418 11 0>;
+		nxp,ven_isinvert = <0>;
+		nxp,isalive = <1>;
+		nfc_i2c_scl = <91>;
+		nfc_i2c_sda = <94>;
+		nxp,pvdd-gpio = <&tca6418 16 0>;
+		pinctrl-names = "nfc-gpio_high","nfc-gpio_low","nfc-fw_high","nfc-fw_low";
+		pinctrl-0 = <&nfc_sel_high>;
+		pinctrl-1 = <&nfc_sel_low>;
+		pinctrl-2 = <&nfc_fw_high>;
+		pinctrl-3 = <&nfc_fw_low>;
+
+		status = "okay";
+	};
+};
+

@@ -1,0 +1,16 @@
+&i2c3 {
+	tca6418_i2c: tca6418-i2c@34 {
+		compatible = "ti,tca6418-i2c";
+		reg = <0x34>;
+		pinctrl = <&tca6418>;
+	};
+};
+
+/ {
+	tca6418: tca6418-pinctrl {
+		compatible = "ti,tca6418-pinctrl";
+		#gpio-cells = <2>;
+		label = "tca6418-gpio";
+		i2c-client = <&tca6418_i2c>;
+	};
+};

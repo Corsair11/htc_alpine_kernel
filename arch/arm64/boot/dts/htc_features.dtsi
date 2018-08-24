@@ -1,0 +1,58 @@
+/ {
+	htc,config-data {
+		/* <debugflag kernelflag bootloaderflag radioflag radioflag_ex1 radioflag_ex2>*/
+		config-data = <0x0 0x0 0x0 0x0 0x0 0x0>;
+	};
+
+	htc,sku-data {
+		sku-data = <0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		status = "okay";
+		ranges;
+
+		htc_reboot_info@83C30000 {
+			reg = <0x0 0x83C30000 0x0 0x400>;
+			save-emmc-feature = <1>;
+			save-emmc-partition = "/dev/block/platform/mtk-msdc.0/11230000.msdc0/by-name/para";
+			save-emmc-offset = <0x24600>;
+			no-map;
+			compatible ="htc,reboot-info";
+			reg-names = "htc_reboot_info_res";
+		};
+
+		htc_bldr_log@83B00000 {
+			compatible = "htc,bldr_log";
+			reg = <0 0x83B00000 0 0x80000>, <0 0x83B80000 0 0x80000>;
+			no-map;
+			reg-names = "bl_log", "bl_old_log";
+		};
+
+		qcom,msm_rtb {
+			reg = <0 0x83E00000 0 0x100000>;
+			no-map;
+			reg-names = "msm_rtb_res";
+		};
+	};
+
+	qcom,msm-rtb {
+		compatible = "qcom,msm-rtb";
+		reg = <0 0x83E00000 0 0x100000>;
+		reg-names = "msm_rtb_res";
+	};
+
+    htc_battery_store {
+        compatible = "htc,htc_battery_store";
+        stored-batt-magic-num = <(-1)>; /* CONFIG_HTC_BATT_PCN0002 */
+        stored-batt-soc = <(-1)>; /* CONFIG_HTC_BATT_PCN0002 */
+        stored-batt-update-time = <(-1)>; /* CONFIG_HTC_BATT_PCN0002 */
+        stored-batt-temperature = <(-1)>; /* CONFIG_HTC_BATT_PCN0002 */
+        stored-batt-total-level = <0>; /* CONFIG_HTC_BATT_PCN0008 */
+        stored-batt-overheat-sec = <0>; /* CONFIG_HTC_BATT_PCN0008 */
+        stored-batt-first-use = <0>; /* CONFIG_HTC_BATT_PCN0008 */
+        stored-batt-checksum = <0>; /* CONFIG_HTC_BATT_PCN0008 */
+    };
+};

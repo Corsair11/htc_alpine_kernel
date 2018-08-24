@@ -1,0 +1,129 @@
+/ {
+	tcpc-usb-cb {
+		compatible	= "mediatek,tcpc_usb_cb";
+	};
+
+	fsa3030 {
+		compatible	= "fairchild-fsa3030";
+
+		pinctrl-names = "usb_type_c_switch_usb","usb_type_c_switch_audio";
+		pinctrl-0 = <&gpio_usb_type_c_switch_usb>;
+		pinctrl-1 = <&gpio_usb_type_c_switch_audio>;
+		status = "okay";
+	};
+};
+
+&usb3_phy {
+	phy_discth = <12>;	/* 640mV */
+};
+
+&pio {
+	gpio_usb_type_c_active: usb_type_c_active {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO42__FUNC_GPIO42>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_usb_type_c_suspend: usb_type_c_suspend {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO42__FUNC_GPIO42>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+	};
+
+	gpio_usb_type_c_switch_usb: usb_type_c_switch_usb {
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO77__FUNC_GPIO77>;
+			slew-rate = <1>;
+			output-high;
+		};
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO78__FUNC_GPIO78>;
+			slew-rate = <1>;
+			output-low;
+		};
+	};
+
+	gpio_usb_type_c_switch_audio: usb_type_c_switch_audio {
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO77__FUNC_GPIO77>;
+			slew-rate = <1>;
+			output-low;
+		};
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO78__FUNC_GPIO78>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+};
+
+&i2c3 {
+	rt1711h@4e {
+		compatible		= "richtek,rt1711h";
+		reg			= <0x4e>;
+		rt1711h,irq_gpio	= <&pio 42 0x0>;
+		rt-dual,supported_modes = <0>; /* 0: dfp/ufp, 1: dfp, 2: ufp */
+		rt-tcpc,name = "type_c_port0"; /* tcpc_device's name */
+		rt-tcpc,role_def = <4>; /* 0: SNK Only, 1: SRC Only, 2: DRP, 3: Try.SRC, 4: Try.SNK */
+		rt-tcpc,rp_level = <0>; /* 0: Default, 1: 1.5, 2: 3.0 */
+		rt-tcpc,notifier_supply_num = <1>; /* the number of notifier supply: tcpc_usb_cb */
+
+		pinctrl-names = "usb_type_c_active","usb_typc_c_suspend";
+		pinctrl-0 = <&gpio_usb_type_c_active>;
+		pinctrl-1 = <&gpio_usb_type_c_suspend>;
+		status = "okay";
+
+		pd-data {
+			pd,source-pdo-size = <1>;
+			pd,source-pdo-data = <0x00019032>; /*<0x019014>;*/
+			pd,sink-pdo-size = <2>;
+			pd,sink-pdo-data = <0x000190c8 0x000190c8>;   /* 0x0002d0c8 : 9V, 2A<0x04019032 0x04019064> */
+
+			/*
+			No DP
+			   pd,id-vdo-size = <3>;
+			   pd,id-vdo-data = <0xd00029cf 0x0 0x00010000>;
+			With DP
+			   pd,id-vdo-size = <4>;
+			   pd,id-vdo-data = <0xec0029cf 0x0 0x00010000 0x11000001>;
+			 */
+
+			pd,id-vdo-size = <3>;
+			pd,id-vdo-data = <0xd40029cf 0x0 0x00010000>;
+		};
+
+		dpm_caps {
+			local_dr_power;
+			local_dr_data;
+			//local_ext_power;
+			local_usb_comm;
+			//local_usb_suspend;
+			//local_high_cap;
+			//local_give_back;
+			//local_no_suspend;
+			local_vconn_supply;
+
+			//attemp_discover_cable_dfp;
+			attemp_enter_dp_mode;
+			attemp_discover_cable;
+			attemp_discover_id;
+			/* 0: disable, 1: prefer_snk, 2: prefer_src */
+			pr_check = <0>;
+			//pr_reject_as_source;
+			//pr_reject_as_sink;
+			pr_check_gp_source;
+			//pr_check_gp_sink;
+
+			/* 0: disable, 1: prefer_ufp, 2: prefer_dfp */
+			dr_check = <0>;
+			//dr_reject_as_dfp;
+			//dr_reject_as_ufp;
+			nk_prefer_low_voltage;
+			snk_ignore_mismatch_current;
+		};
+	};
+};

@@ -1,0 +1,225 @@
+
+&pio {
+	pins_default: pins_default{
+	};
+
+	cpu2mcu_intr_high: cpu2mcu_intr_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO111__FUNC_GPIO111>;
+			slew-rate = <1>;
+			output-high;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+   cpu2mcu_intr_low: cpu2mcu_intr_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO111__FUNC_GPIO111>;
+			slew-rate = <1>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+/*	use ioexp 10 as below
+	shub_boot_sel_high: shub_boot_sel_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
+			slew-rate = <1>;
+			bias-pull-down = <00>;
+			output-high;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_boot_sel_low: shub_boot_sel_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO4__FUNC_GPIO4>;
+			slew-rate = <1>;
+			bias-pull-down = <00>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+*/
+
+	mcp_status_high: mcp_status_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO43__FUNC_GPIO43>;
+			slew-rate = <0>;
+			bias-disable;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	mcp_status_low: mcp_status_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO43__FUNC_GPIO43>;
+			slew-rate = <0>;
+			bias-disable;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_rst_high: shub_rst_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO157__FUNC_GPIO157>;
+			slew-rate = <1>;
+			output-high;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_rst_low: shub_rst_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO157__FUNC_GPIO157>;
+			slew-rate = <1>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_rst_input_high: shub_rst_input_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO157__FUNC_GPIO157>;
+			slew-rate = <0>;
+			bias-pull-up = <11>;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_rst_input_low: shub_rst_input_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO157__FUNC_GPIO157>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+			input-schmitt-enable = <0>;
+		};
+	};
+	hub2cpu_intr_high: hub2cpu_intr_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO5__FUNC_GPIO5>;
+			slew-rate = <0>;
+			bias-disable;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	hub2cpu_intr_low: hub2cpu_intr_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO5__FUNC_GPIO5>;
+			slew-rate = <0>;
+			bias-disable;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_sr_1v8_sel_high: shub_sr_1v8_sel_high {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO8__FUNC_GPIO8>;
+			slew-rate = <1>;
+			output-high;
+			input-schmitt-enable = <0>;
+		};
+	};
+
+	shub_sr_1v8_sel_low: shub_sr_1v8_sel_low {
+		pins_cmd_dat {
+			pins = <PINMUX_GPIO8__FUNC_GPIO8>;
+			slew-rate = <1>;
+			output-low;
+			input-schmitt-enable = <0>;
+		};
+	};
+};
+
+&tca6418 {
+	Chip_mode-gpio_high {
+		shub_boot_sel_high: shub_boot_sel_high {
+			config {
+				pins = "gpio10";
+				output-high;
+				bias-disable;
+			};
+		};
+	};
+
+	Chip_mode-gpio_low {
+		shub_boot_sel_low: shub_boot_sel_low {
+			config {
+				pins = "gpio10";
+				output-low;
+				bias-disable;
+			};
+		};
+	};
+};
+
+&i2c1 {
+
+		htc_mcu@72{
+				compatible = "htc_mcu";
+				reg = <0x72>;
+
+				mcu,intr-gpio  = <5>;
+				mcu,gs_chip_layout = <1>;
+				mcu,acceleration_axes = <7>;
+				mcu,magnetic_axes = <7>;
+				mcu,gyro_axes = <7>;
+				mcu,Cpu_wake_mcu-gpio = <111>;
+				mcu,Reset-gpio = <157>;
+//				mcu,Chip_mode-gpio = <4>;//use ioexp 10
+				mcu,Chip_mode-gpio_ioexp = <&tca6418 10 0>;
+				mcu,mcu_status-gpio = <43>;
+				mcu,pcb-id = <1>;
+				mcu,als_levels  = <6 17 27 131 264 1763 2645 4761 6525 65535>;
+				mcu,als_levels_2 = <15 23 37 174 348 2326 3490 6283 9774 65535>;
+				mcu,als_goldl = <0xDD>;			//need hw/optical provide gadc_l
+				mcu,als_goldh = <0x0B>;			//need hw/optical provide gadc_h
+//BACKLIGHT20 ++
+				mcu,als_polling = <1>;
+				mcu,als_lux_ratio_n = <29>;      // Numerator,     eg: 870/gadc = 0.29,  als_lux_ratio_n = 29, als_lux_ratio_d = 100
+				mcu,als_lux_ratio_d = <100>;     // Denominator
+//BACKLIGHT20 --
+				mcu,ps_thd_add = <0x1B>;
+				mcu,ps_thd_fixed = <0x15>;
+//				mcu,SR_1V8 = "MT6331_POWER_LDO_VCAM_AF";
+				mcu,SR_1V8-gpio = <8>;
+				touch_enable = <1>;
+				vibrate_ms = <40>;
+				mcu,rv_calibration = <2>;
+				mcu,ps_info = <1>;
+				pinctrl-names = "pin_default", "pin_cfg_high", "pin_cfg_low","Chip_mode-gpio_high", "Chip_mode-gpio_low","mcu_status-gpio_high","mcu_status-gpio_low",
+				"Reset-gpio_high", "Reset-gpio_low","intr-gpio_high","intr-gpio_low","shub_rst_input_high","shub_rst_input_low","sr_1v8-gpio_high","sr_1v8-gpio_low";
+				pinctrl-0 = <&pins_default>;
+				pinctrl-1 = <&cpu2mcu_intr_high>;
+				pinctrl-2 = <&cpu2mcu_intr_low>;
+				pinctrl-3 = <&shub_boot_sel_high>;
+				pinctrl-4 = <&shub_boot_sel_low>;
+				pinctrl-5 = <&mcp_status_high>;
+				pinctrl-6 = <&mcp_status_low>;
+				pinctrl-7 = <&shub_rst_high>;
+				pinctrl-8 = <&shub_rst_low>;
+				pinctrl-9 = <&hub2cpu_intr_high>;
+				pinctrl-10 = <&hub2cpu_intr_low>;
+				pinctrl-11 = <&shub_rst_input_high>;
+				pinctrl-12 = <&shub_rst_input_low>;
+				pinctrl-13 = <&shub_sr_1v8_sel_high>;
+				pinctrl-14 = <&shub_sr_1v8_sel_low>;
+
+				status = "okay";
+			};
+
+		htc_mcu_flash@39 {
+			compatible = "htc_mcu_flash";
+			reg = <0x39>;
+		};
+
+		htc_mcu_dload@02 {
+			compatible = "htc_mcu_dload";
+			reg = <0x02>;
+		};
+
+
+
+};

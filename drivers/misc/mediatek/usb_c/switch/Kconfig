@@ -1,0 +1,10 @@
+#
+# HTC FSA3030UMX switch driver
+#
+
+config SWITCH_FSA3030
+	bool "Fairchild switch FSA3030UMX support"
+	default n
+	---help---
+		The FSA3030 is a bi-directional, low-power, high-speed,
+		3:1, USB2.0, MHL™ and audio switch.

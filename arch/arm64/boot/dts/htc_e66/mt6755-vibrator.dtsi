@@ -1,0 +1,43 @@
+
+/* Vibrator GPIO start*/
+&pio {
+	vibrator_default: default {
+
+	};
+	vibrator_rst: NRST_low{
+
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO24__FUNC_GPIO24>;
+			slew-rate = <1>;
+			output-high;
+		};
+	};
+
+	vibrator_irq: INT_input {
+
+	    pins_cmd_dat {
+			pins = <PINMUX_GPIO84__FUNC_GPIO84>;
+			slew-rate = <0>;
+			bias-disable;
+		};
+	};
+};
+&vibrator {
+	htc,reset-gpio = <24>;
+	htc,irq-gpio = <84>;
+	pinctrl-names = "default", "vib_init";
+	pinctrl-0 = <&vibrator_default>;
+	pinctrl-1 = <&vibrator_rst &vibrator_irq>;
+	interrupt-parent = <&eintc>;
+	interrupts = <24 IRQ_TYPE_LEVEL_HIGH>;
+	debounce = <24 0>;
+	status = "okay";
+	htc,smart-loop = <0>;
+	htc,actuator = <1>;
+	htc,rated-voltage = <0x3d>;
+	htc,odclamp-voltage = <0x87>;
+	htc,lra-frequency = <204>;
+
+};
+/*vibrator GPIO end*/
+

@@ -1,0 +1,125 @@
+/*
+ * Copyright (C) 2015 MediaTek Inc.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
+#ifndef _CUST_BATTERY_METER_H
+#define _CUST_BATTERY_METER_H
+
+#define SOC_BY_HW_FG
+
+
+#define R_BAT_SENSE	4
+#define R_I_SENSE	4
+#define R_CHARGER_1	330
+#define R_CHARGER_2	39
+
+#define TEMPERATURE_T0	(120)
+#define TEMPERATURE_T1	(110)
+#define TEMPERATURE_T2	0
+#define TEMPERATURE_T3	25
+#define TEMPERATURE_T4	50
+#define TEMPERATURE_T	255 
+
+#define FG_METER_RESISTANCE	0
+
+#define Q_MAX_POS_50	2743
+#define Q_MAX_POS_25 2709
+#define Q_MAX_POS_0 1168
+#define Q_MAX_NEG_10 762
+#define Q_MAX_NEG_20 762
+
+#define Q_MAX_POS_50_H_CURRENT	2688
+#define Q_MAX_POS_25_H_CURRENT 2655
+#define Q_MAX_POS_0_H_CURRENT 1145
+#define Q_MAX_NEG_10_H_CURRENT 747
+#define Q_MAX_NEG_20_H_CURRENT 747
+
+#define OAM_D5	1		
+
+
+#define CHANGE_TRACKING_POINT
+#ifdef CONFIG_MTK_HAFG_20
+#define CUST_TRACKING_POINT	0
+#else
+#define CUST_TRACKING_POINT	1
+#endif
+#define CUST_R_SENSE         56
+#define CUST_HW_CC	0
+#define AGING_TUNING_VALUE	103
+#define CUST_R_FG_OFFSET	0
+
+#define OCV_BOARD_COMPESATE	0 
+#define R_FG_BOARD_BASE	1000
+#define R_FG_BOARD_SLOPE	1000 
+
+#define CURRENT_DETECT_R_FG	10  
+#define MinErrorOffset	1000
+#define FG_VBAT_AVERAGE_SIZE	18
+#define R_FG_VALUE	10 
+
+#define DIFFERENCE_HWOCV_RTC	30
+#define DIFFERENCE_HWOCV_SWOCV	10
+#define DIFFERENCE_SWOCV_RTC	10
+#define DIFFERENCE_VBAT_RTC 30
+#define DIFFERENCE_SWOCV_RTC_POS 15
+#define MAX_SWOCV	3
+
+#define DIFFERENCE_VOLTAGE_UPDATE	20
+#define AGING1_LOAD_SOC	70
+#define AGING1_UPDATE_SOC	30
+#define BATTERYPSEUDO100	99
+#define BATTERYPSEUDO1 0
+
+#define Q_MAX_BY_SYS			
+#define Q_MAX_SYS_VOLTAGE		3350
+#define SHUTDOWN_GAUGE0
+#define SHUTDOWN_GAUGE1_XMINS
+#define SHUTDOWN_GAUGE1_MINS	60
+
+#define CHARGE_TRACKING_TIME	60
+#define DISCHARGE_TRACKING_TIME	10
+
+#define RECHARGE_TOLERANCE	10
+#define MAX_HWOCV	5
+#define MAX_VBAT	90
+#define DIFFERENCE_HWOCV_VBAT	30
+
+#define CUST_POWERON_DELTA_CAPACITY_TOLRANCE	40
+#define CUST_POWERON_LOW_CAPACITY_TOLRANCE	5
+#define CUST_POWERON_MAX_VBAT_TOLRANCE	90
+#define CUST_POWERON_DELTA_VBAT_TOLRANCE	30
+#define CUST_POWERON_DELTA_HW_SW_OCV_CAPACITY_TOLRANCE	10
+
+
+#ifdef CONFIG_MTK_DISABLE_POWER_ON_OFF_VOLTAGE_LIMITATION
+#define FIXED_TBAT_25
+#endif
+
+#define VBAT_NORMAL_WAKEUP	3600		
+#define VBAT_LOW_POWER_WAKEUP	3500		
+#define NORMAL_WAKEUP_PERIOD	3600		
+#define LOW_POWER_WAKEUP_PERIOD	300		
+#define CLOSE_POWEROFF_WAKEUP_PERIOD	30	
+
+#define INIT_SOC_BY_SW_SOC
+
+
+#define MTK_ENABLE_AGING_ALGORITHM
+
+#define MD_SLEEP_CURRENT_CHECK
+
+
+#define FG_BAT_INT
+#define IS_BATTERY_REMOVE_BY_PMIC
+
+
+#endif

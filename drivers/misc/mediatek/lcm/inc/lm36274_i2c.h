@@ -1,0 +1,43 @@
+#ifndef __LM36274_I2C_H
+#define __LM36274_I2C_H
+
+#define LM36274_SLAVE_ADDR_WRITE 0x22
+
+#define LM36274_MAX_BRIGHTNESS 679
+
+#define LM36274_CALI_MAX_BRIGHTNESS 850
+
+#define LM36274_BRIGHTNESS_CTRL_MODE_I2C_ONLY 0
+
+#define MOTION_LAUNCH_SUPPORT 1
+
+enum {
+	LM36274_REVISION_REG = 1,          
+	LM36274_BACKLIGHT_CONFIG_1_REG,    
+	LM36274_BACKLIGHT_CONFIG_2_REG,    
+	LM36274_BRIGHTNESS_LSB_REG,        
+	LM36274_BRIGHTNESS_MSB_REG,        
+	LM36274_BACKLIGHT_AUTO_FREQ_LOW,   
+	LM36274_BACKLIGHT_AUTO_FREQ_HIGH,  
+	LM36274_BACKLIGHT_EN_REG,          
+	LM36274_DISP_BIAS_CONFIG_1_REG,    
+	LM36274_DISP_BIAS_CONFIG_2_REG,    
+	LM36274_DISP_BIAS_CONFIG_3_REG,    
+	LM36274_LCM_BOOST_BIAS_REG,        
+	LM36274_VPOS_BIAS_REG,             
+	LM36274_VNEG_BIAS_REG,             
+	LM36274_FLAGS_REG,                 
+	LM36274_BACKLIGHT_OPTION_1_REG,    
+	LM36274_BACKLIGHT_OPTION_2_REG,    
+	LM36274_PWM_TO_DIGITAL_LSB,        
+	LM36274_PWM_TO_DIGITAL_MSB,        
+	LM36274_REG_MAX
+};
+
+void lm36274_enable(void);
+void lm36274_disable(void);
+int lm36274_write_bytes(unsigned char addr, unsigned char value);
+int lm36274_read_bytes(unsigned char addr, unsigned char *data);
+int lm36274_write_brightness(int brightness);
+
+#endif

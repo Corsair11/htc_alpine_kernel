@@ -1,0 +1,98 @@
+/ {
+	fp_interrupt {
+		status        = "okay";
+		compatible = "fp,fp_irq"; 
+    /* EV_MSC, MSC_SCAN */
+		fp,event-type = <4>;
+		fp,event-code = <4>;
+		fp,irq_gpio    = <2>;
+		fp,rst_gpio  = <24>;
+		fp,id_gpio = <25>;
+		fp,enable-wakeup;
+ 
+		pinctrl-names = "fpc_pins_ctrl0", "fpc_pins_ctrl1"; 
+		pinctrl-0 = <&fp_pins_mode0>;
+		pinctrl-1 = <&fp_pins_mode1>;
+ 
+	fingerprint: fingerprint{
+			label = "fingerprint";
+			gpios = <2>;
+		};
+	};
+
+};
+
+/*FingerPrint start */
+
+&pio{
+	fp_pins_mode0: fp_pins_mode0 {
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO2__FUNC_GPIO2>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO24__FUNC_GPIO24>;
+			slew-rate = <1>;
+		};
+		pins_cmd2_dat {
+			pins = <PINMUX_GPIO25__FUNC_GPIO25>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+		pins_cmd3_dat {
+			pins = <PINMUX_GPIO95__FUNC_SPI0_MI>;
+		};
+		pins_cmd4_dat {
+			pins = <PINMUX_GPIO96__FUNC_SPI0_CSB>;
+		};
+		pins_cmd5_dat {
+			pins = <PINMUX_GPIO97__FUNC_SPI0_MO>;
+		};
+		pins_cmd6_dat {
+			pins = <PINMUX_GPIO98__FUNC_SPI0_CLK>;
+		};
+	};
+	fp_pins_mode1: fp_pins_mode1 {
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO2__FUNC_GPIO2>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO24__FUNC_GPIO24>;
+			slew-rate = <1>;
+		};
+		pins_cmd2_dat {
+			pins = <PINMUX_GPIO25__FUNC_GPIO25>;
+			slew-rate = <0>;
+			bias-pull-up = <00>;
+		};
+		pins_cmd3_dat {
+			pins = <PINMUX_GPIO95__FUNC_SPI0_MI>;
+		};
+		pins_cmd4_dat {
+			pins = <PINMUX_GPIO96__FUNC_SPI0_CSB>;
+		};
+		pins_cmd5_dat {
+			pins = <PINMUX_GPIO97__FUNC_SPI0_MO>;
+		};
+		pins_cmd6_dat {
+			pins = <PINMUX_GPIO98__FUNC_SPI0_CLK>;
+		};
+	};
+};
+/*FingerPrint end */
+&spi0 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	fp_spi: fp_spi{
+		compatible = "fp_spi";
+		reg = <0>;
+	};  
+
+};
+
+
+

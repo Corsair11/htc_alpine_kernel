@@ -1,0 +1,35 @@
+comment "HTC Debugging Features"
+menuconfig HTC_DEBUG
+        bool "HTC Debugging Feature Switch"
+        default y
+        help
+          Enable collection of debug features.
+          This feature is enabled in defconfig.
+
+comment "HTC features"
+menuconfig HTC_FEATURES
+        bool "HTC Implement Features"
+        default n
+        help
+          Enable collection of HTC features.
+          This feature is enabled in defconfig.
+
+config HTC_DEBUG_RTB
+        default n
+        depends on HTC_DEBUG && MSM_RTB
+        bool "HTC style rtb debug features"
+        help
+          Say Y here if you want the HTC style rtb debug features
+
+comment "HTC Debug Flag"
+menuconfig HTC_ORR
+	bool "HTC Debug Flag Features"
+        default y
+	help
+          Enable Debug Flag features.
+
+config LMK_ZYGOTE_PROTECT
+	bool "LMK zygote protect"
+	default y
+	help
+	  Say Y here if you want the HTC style for protecting zygote to be killed by LMK with invalid adj values

@@ -1,0 +1,50 @@
+/* NFC GPIO start */
+&pio {
+	pn548_pins_default: pn548_pins_default {
+
+		pins_cmd0_dat {
+			pins = <PINMUX_GPIO89__FUNC_GPIO89>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+
+		pins_cmd1_dat {
+			pins = <PINMUX_GPIO25__FUNC_GPIO25>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+
+		pins_cmd2_dat {
+			pins = <PINMUX_GPIO83__FUNC_GPIO83>;
+			slew-rate = <1>;
+			bias-disable;
+			output-low;
+		};
+		pins_cmd3_dat {
+			pins = <PINMUX_GPIO99__FUNC_SRCLKENAI0>;
+			slew-rate = <0>;
+			bias-pull-down = <00>;
+		};
+	};
+};
+
+&i2c3 {
+	nxp_pn548_nfc@28 {
+		compatible = "nxp,pn548-nfc";
+		reg = <0x28>;
+		nxp,irq-gpio = <89>;
+		nxp,ven-gpio = <25>;
+		nxp,fwdl-gpio = <83>;
+		nxp,ven_isinvert = <0>;
+		nxp,isalive = <1>;
+		nfc_i2c_scl = <49>;
+		nfc_i2c_sda = <50>;
+		nfc_pvdd_regulator = "vgp3";
+
+		pinctrl-names = "pn548_pins_default";
+		pinctrl-0 = <&pn548_pins_default>;
+		status = "okay";
+	};
+};
+/* NFC end */
